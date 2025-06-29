@@ -38,3 +38,4 @@ out/
 
 ### Spring Boot private keys ###
 src/main/resources/application.properties
+src/main/resources/application-dev.properties

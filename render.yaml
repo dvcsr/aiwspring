@@ -1,0 +1,32 @@
+# Render Blueprint Configuration
+# LEARNING CONCEPT: Infrastructure as Code (IaC)
+# This file defines your entire deployment configuration in code
+# Professional practice: Version-controlled infrastructure
+
+services:
+  - type: web
+    name: aiwspring-backend
+    env: java
+    plan: free  # Free tier for learning
+    buildCommand: ./gradlew build -x test
+    startCommand: java -Dserver.port=$PORT -Dspring.profiles.active=prod -jar build/libs/aiwspring-backend-1.0.0.jar
+    
+    # LEARNING CONCEPT: Environment Variables
+    # These are injected at runtime, keeping secrets secure
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false  # Set manually in Render dashboard
+      - key: MISTRAL_API_KEY  
+        sync: false  # Set manually in Render dashboard
+      - key: OPENAI_API_URL
+        value: https://openrouter.ai/api/v1/chat/completions
+      - key: MISTRAL_API_URL
+        value: https://api.mistral.ai/v1/chat/completions
+    
+    # LEARNING CONCEPT: Health Checks
+    # Render monitors this endpoint to ensure your app is healthy
+    healthCheckPath: /actuator/health
+    
+    # LEARNING CONCEPT: Auto-deployment
+    # Automatically deploys when you push to main branch
+    autoDeploy: true

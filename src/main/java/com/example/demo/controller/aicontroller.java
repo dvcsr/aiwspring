@@ -23,7 +23,7 @@ public class aicontroller {
     @Value("${mistral.api.url}")
     private String mistralApiUrl;
 
-    @PostMapping("/ask-color-gpt")
+    @PostMapping("/ask-color-deepseek")
     public ResponseEntity<String> askColor(@RequestBody Map<String, String> payload) {
         RestTemplate restTemplate = new RestTemplate();
 
@@ -33,7 +33,7 @@ public class aicontroller {
 
         // Build the OpenAI payload
         String body = "{\n" +
-                "  \"model\": \"openai/gpt-4o\",\n" +
+                "  \"model\": \"deepseek/deepseek-r1-0528:free\",\n" +
                 "  \"messages\": [\n" +
                 "    {\"role\": \"system\", \"content\": \"You are a friendly teacher helping a child learn colors. The current color being shown is " + payload.get("currentColor") + ". Be encouraging, patient, and educational. If the child is correct, praise them and maybe teach them something interesting about the color. If they're wrong, gently correct them and help them learn. Keep responses short and child-friendly.\"},\n" +
                 "    {\"role\": \"user\", \"content\": \"The child answered: \\\"" + payload.get("userAnswer") + "\\\" when asked about the color " + payload.get("currentColor") + ".\"}\n" +
@@ -45,7 +45,7 @@ public class aicontroller {
         HttpEntity<String> entity = new HttpEntity<>(body, headers);
 
         ResponseEntity<String> response = restTemplate.postForEntity(apiUrl, entity, String.class);
-        System.out.println("gpt api hit");
+        System.out.println("deepseek api hit");
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     }
 
