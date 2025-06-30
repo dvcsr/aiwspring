@@ -1,0 +1,48 @@
+# LEARNING CONCEPT: Docker build optimization
+# Exclude unnecessary files from Docker build context
+
+# Build artifacts
+build/
+.gradle/
+*.jar
+*.war
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.project
+.classpath
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git files
+.git/
+.gitignore
+
+# Documentation
+*.md
+DEPLOYMENT.md
+RENDER_DEPLOYMENT_GUIDE.md
+
+# Logs
+logs/
+*.log
+
+# Test files
+src/test/
+
+# Local environment files
+.env
+.env.local
+application.properties
+application-dev.properties
+
+# Docker files
+Dockerfile
+.dockerignore

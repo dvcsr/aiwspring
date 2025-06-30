@@ -11,13 +11,28 @@ Understand modern cloud deployment practices using Render's platform, focusing o
 
 ### Configuration Files Explained
 
+#### `Dockerfile` (Containerization)
+```dockerfile
+# Multi-stage build for optimization
+FROM openjdk:17-jdk-alpine AS builder    # Build stage
+FROM openjdk:17-jre-alpine               # Runtime stage
+
+# Security: Non-root user
+USER spring
+
+# Health checks and monitoring
+HEALTHCHECK --interval=30s --timeout=3s
+```
+
+**Learning Point**: Docker containers provide consistent, isolated environments that work the same way across development, testing, and production.
+
 #### `render.yaml` (Infrastructure as Code)
 ```yaml
 # PROFESSIONAL CONCEPT: Everything defined in code
-- buildCommand: ./gradlew build -x test    # How to build your app
-- startCommand: java -jar build/libs/*.jar  # How to run your app
-- healthCheckPath: /actuator/health        # How to monitor health
-- autoDeploy: true                         # Git-triggered deployment
+- env: docker                          # Use Docker for deployment
+- dockerfilePath: ./Dockerfile         # Path to Docker configuration
+- healthCheckPath: /actuator/health    # How to monitor health
+- autoDeploy: true                     # Git-triggered deployment
 ```
 
 **Learning Point**: This file represents "Infrastructure as Code" - a professional practice where your deployment configuration is version-controlled alongside your application code.
@@ -56,15 +71,24 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 git push origin main
 ```
 
-### Step 2: Connect GitHub to Render
+### Step 2: Deploy via Docker Web Service (Professional Approach)
 
 1. **Go to Render Dashboard**: https://dashboard.render.com
-2. **Click "New +"** → **"Blueprint"**
-3. **Connect your GitHub repository**
+2. **Click "New +"** → **"Web Service"**
+3. **Connect your GitHub repository** (authorize Render to access your GitHub)
 4. **Select this repository** (`aiwspring`)
+5. **Configure the service**:
+   - **Name**: `aiwspring-backend` (or your preferred name)
+   - **Language**: **Docker** (since Java isn't directly supported)
+   - **Branch**: `main` (or `master` if that's your default branch)
+   - **Dockerfile Path**: `./Dockerfile` (leave default)
+   - **Docker Command**: Leave empty (uses Dockerfile ENTRYPOINT)
 
-**LEARNING CONCEPT**: This establishes a CI/CD pipeline where:
-- Code changes → Automatic builds → Automatic deployments
+**LEARNING CONCEPT**: Docker deployment provides:
+- **Containerization**: Your app runs in an isolated, consistent environment
+- **Professional Standard**: Docker is the industry standard for deployment
+- **Multi-stage Builds**: Optimized for production with smaller images
+- **Security**: Non-root user execution and minimal attack surface
 
 ### Step 3: Configure Environment Variables (Security)
 

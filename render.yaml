@@ -6,10 +6,10 @@
 services:
   - type: web
     name: aiwspring-backend
-    env: java
+    env: docker
     plan: free  # Free tier for learning
-    buildCommand: ./gradlew build -x test
-    startCommand: java -Dserver.port=$PORT -Dspring.profiles.active=prod -jar build/libs/aiwspring-backend-1.0.0.jar
+    dockerfilePath: ./Dockerfile
+    # Docker builds automatically, no separate build command needed
     
     # LEARNING CONCEPT: Environment Variables
     # These are injected at runtime, keeping secrets secure
